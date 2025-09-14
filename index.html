@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comfort Envelope</title>
+  <link rel="icon" type="image/x-icon" href="public/images/love-message-open-envelope-svgrepo-com.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+     <div class="music-toggle">
+        <button id="music-btn">🔊</button>
+    </div>
+
+    <div class="container">
+        <h1 class="title">My Comfort Envelope<h1>
+        <div class="envelope-wrapper">
+            <div class="envelope">
+                <div class="letter">
+                    <div class="text">
+                        <strong>Dear Babi,</strong>
+                        <p>
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="heart"></div>
+
+            <!-- Floating hearts container -->
+            <div class="floating-hearts"></div>
+        </div>
+    </div>
+
+     <!-- Background music -->
+    <audio id="bg-music" loop>
+        <source src="public/audios/Ikaw Pa Rin Ang Pipiliin Ko - Cup of Joe .mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+    </audio>
+
+<script>
+    const envelope = document.querySelector('.envelope-wrapper');
+    const floatingHearts = document.querySelector('.floating-hearts');
+    const letterMessage = document.querySelector('.text p');
+    const musicBtn = document.getElementById('music-btn');
+    const bgMusic = document.getElementById('bg-music');
+
+    let heartInterval;
+
+    // 🎵 Playlist of songs
+    const songs = [
+        "public/audios/Cup of Joe - Patutunguhan.mp3",
+        "public/audios/Cup of Joe, Janine Teñoso - Tingin.mp3",
+        "public/audios/Ikaw Pa Rin Ang Pipiliin Ko - Cup of Joe .mp3",
+        "public/audios/dwta - Padaba Taka.mp3",
+        "public/audios/Dionela - Musika",
+        "public/audios/Dionela - Sining ft.Jay R"
+    ];
+
+    // 🎵 Pick a random song on load
+    function getRandomSong() {
+        const index = Math.floor(Math.random() * songs.length);
+        return songs[index];
+    }
+
+    // Set initial song
+    bgMusic.src = getRandomSong();
+    bgMusic.volume = 0.5;
+
+    // Try autoplay (some browsers need interaction first)
+    bgMusic.play().catch(() => {
+        console.log("Autoplay blocked until user clicks.");
+    });
+
+     // 🎵 Toggle music
+    musicBtn.addEventListener('click', () => {
+        if (bgMusic.paused) {
+            bgMusic.play();
+            musicBtn.textContent = "🔊";
+        } else {
+            bgMusic.pause();
+            musicBtn.textContent = "🔇";
+        }
+    });
+
+    // Messages for the letter
+    const messages = [
+        "You make my heart smile everyday ❤️",
+        "Thank you for always being there for me. 💕",
+        "I love you so munch! 💕",
+        "You’re my sunshine during rainy days ☀️",
+        "Forever and always, it’s you 💖",
+        "My world is better with you in it 🌎💞",
+        "You’re the reason I believe in love ✨",
+        "No distance can keep us apart 💌",
+        "With you, everything feels great 💝",
+        "Mahal na mahal kita, sobra! 💞",
+        "Bakit ang kay ganda mo? 💖",
+        "Palagi mo na lang pinapatibok itong puso kong sabik na sabik sa pagmamahal mo. ❤️",
+        "Miss na kita, dito ka na sa mga yakap ko. 🤗",
+        "Nandito lang ako palagi sayo. 💓",
+        "Salamat sa pagmamahal mo. 🩷",
+        "I wouldn't even trade our love for anything! 💞",
+        "It feels like haven knowing that I have a great partner by my side. 💝",
+        "Thank you for being patience with me. 💖",
+        "Everyone who truly knows you including myself sees you as a great person! 💖",
+        "Alam kong kaya mong lampasan ang lahat ng pagsubok na dadating sa iyo! Kaya palagi ka lang mag dasal. 🙏❤️",
+        "You're absolutely smoking hot baby! 🔥❤️",
+        "Please, I want you to always rely on me whenever you need someone to lean on. 💞",
+        "Damn! I want to always spoil you with my hugs and kisses. 🤗😘",
+        "Keep it up baby! You are almost there! ❤️💞",
+        "Thank you for always working hard. I love you! 💞",
+    ];
+
+    // Working copy of shuffled messages
+    let messageQueue = [];
+
+    // Fisher-Yates shuffle
+    function shuffleArray(array) {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    // Get next message, reshuffle when empty
+    function getNextMessage() {
+        if (messageQueue.length === 0) {
+            messageQueue = shuffleArray(messages);
+        }
+        return messageQueue.pop();
+    }
+
+    // Toggle envelope open/close
+    envelope.addEventListener('click', () => {
+        envelope.classList.toggle('flap');
+
+        if (envelope.classList.contains('flap')) {
+            // Show next unique message
+            letterMessage.textContent = getNextMessage();
+
+            startFloatingHearts();
+        } else {
+            stopFloatingHearts();
+        }
+    });
+
+    function startFloatingHearts() {
+        heartInterval = setInterval(() => {
+            const heart = document.createElement('span');
+            heart.textContent = '❤';
+            heart.style.left = Math.random() * 100 + 'px';
+            heart.style.fontSize = Math.random() * 10 + 14 + 'px';
+            floatingHearts.appendChild(heart);
+
+            // Remove after animation ends
+            setTimeout(() => heart.remove(), 3000);
+        }, 500); // spawn every 0.5s
+    }
+
+    function stopFloatingHearts() {
+        clearInterval(heartInterval);
+        floatingHearts.innerHTML = ''; // clear remaining hearts
+    }
+</script>
+
+</body>
+</html>
