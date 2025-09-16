@@ -5,13 +5,28 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Comfort Envelope</title>
-  <link rel="icon" type="image/x-icon" href="public/images/love-message-open-envelope-svgrepo-com.svg" />
+  <link rel="icon" type="image/x-icon" href="public/images/letter-sealed-with-a-heart-svgrepo-com.svg" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-     <div class="music-toggle">
-        <button id="music-btn">🔊</button>
+    <div class="music-toggle">
+    <button id="music-btn">🎵</button>
     </div>
+
+    <!-- Music Player Sidebar -->
+    <div id="music-player" class="music-player">
+    <div class="music-header">
+        <h3 id="song-title">Now Playing</h3>
+    </div>
+    <div class="controls">
+        <button id="prev-btn">⏮</button>
+        <button id="play-pause-btn">▶</button>
+        <button id="next-btn">⏭</button>
+    </div>
+    </div>
+
+    <!-- Background music -->
+    <audio id="bg-music"></audio>
 
     <div class="container">
         <h1 class="title">My Comfort Envelope<h1>
@@ -33,62 +48,16 @@
         </div>
     </div>
 
-     <!-- Background music -->
-    <audio id="bg-music" loop>
-        <source src="public/audios/Ikaw Pa Rin Ang Pipiliin Ko - Cup of Joe .mp3" type="audio/mpeg" />
-        Your browser does not support the audio element.
-    </audio>
-
 <script>
     const envelope = document.querySelector('.envelope-wrapper');
     const floatingHearts = document.querySelector('.floating-hearts');
     const letterMessage = document.querySelector('.text p');
-    const musicBtn = document.getElementById('music-btn');
-    const bgMusic = document.getElementById('bg-music');
-
-    let heartInterval;
-
-    // 🎵 Playlist of songs
-    const songs = [
-        "public/audios/Cup of Joe - Patutunguhan.mp3",
-        "public/audios/Cup of Joe, Janine Teñoso - Tingin.mp3",
-        "public/audios/Ikaw Pa Rin Ang Pipiliin Ko - Cup of Joe .mp3",
-        "public/audios/dwta - Padaba Taka.mp3",
-        "public/audios/Dionela - Musika",
-        "public/audios/Dionela - Sining ft.Jay R"
-    ];
-
-    // 🎵 Pick a random song on load
-    function getRandomSong() {
-        const index = Math.floor(Math.random() * songs.length);
-        return songs[index];
-    }
-
-    // Set initial song
-    bgMusic.src = getRandomSong();
-    bgMusic.volume = 0.5;
-
-    // Try autoplay (some browsers need interaction first)
-    bgMusic.play().catch(() => {
-        console.log("Autoplay blocked until user clicks.");
-    });
-
-     // 🎵 Toggle music
-    musicBtn.addEventListener('click', () => {
-        if (bgMusic.paused) {
-            bgMusic.play();
-            musicBtn.textContent = "🔊";
-        } else {
-            bgMusic.pause();
-            musicBtn.textContent = "🔇";
-        }
-    });
 
     // Messages for the letter
     const messages = [
-        "You make my heart smile everyday ❤️",
-        "Thank you for always being there for me. I love you always! 💕",
-        "I love you so munch! 💕",
+        "You deserve to know that you make my heart smile everyday ❤️",
+        "Thank you for always being there for me - I love you always! 💕",
+        "Kung ang english ng sibuyas ay onion, bakit yung height mo pang minions? 😂",
         "You’re my sunshine during the rainy days ☀️",
         "Forever and always, it’s you 💖",
         "My world is better with you in it 🌎💞",
@@ -96,7 +65,7 @@
         "No distance can keep us apart 💌",
         "With you, everything feels great 💝",
         "Mahal na mahal kita, sobra! 💞",
-        "Binibini, Bakit kay ganda mo? 💖",
+        "Binibini, bakit kay ganda mo? 💖",
         "Alam mo ba? Palagi mo na lang pinapatibok itong puso kong sabik na sabik sa pagmamahal mo. ❤️",
         "Miss na kita, dito ka na sa mga yakap ko. 🤗",
         "Palaging mong isipin na andito lang ako para sayo. 💓",
@@ -111,7 +80,31 @@
         "Gosh! I want to always spoil you with my hugs and kisses. 🤗😘",
         "Keep it up baby! You are almost there! ❤️💞",
         "Thank you for always working hard. I love you! 💞",
-        "I miss kiss you and cuddling you every night. 💞"
+        "I miss kissing you and cuddling you every night. 💞",
+        "Ikakagalit ba ng magic sarap kung ang tunay na sarap ay sakin mo lang malalasap? 😋",
+        "Hindi naman ako allergic sayo, pero bakit kapag lumalapit ka sa akin namumula ako? 🥵",
+        "Anak ka lang ng mama mo. Pero palagi mong i-isipin na baby kita! ❤️",
+        "Kung ang rock nga ay bato, I miss you na baby ko. ❤️",
+        "Ikakagalit ba ng multo kung mas takot akong mawala ka? 👻❤️",
+        "Palagi kitang pipiliin sa araw-araw. ❤️",
+        "Puppy love, yan yung panahong nainlove ka sa mukhang aso. 🐶",
+        "Ballpen nga kinakagat ko, labi mo pa kaya. 🖊️❤️",
+        "Panatang makabayan, ini-ibig ko ang isa diyan. Yieeee! 🖐️❤️",
+        "Kapag umutot ako sa harapan mo, it means fart kana ng life ko. 🍑💨",
+        "Aminado akong tamad, pero babangon ako para sa'yo. Yieeee! 🫰",
+        "Walang mahirap na daan basta ikaw ang pupuntahan! ❤️",
+        "Crush pa lang kita, super loyal na ako sa'yo. ❤️",
+        "'Di bagay sa'yo ang pagse'self-love kailangan mo talaga ng pagmamahal ko. 🫰💞",
+        "Pag ako naging asawa mo 'di kita pa-paulamin ng asin hangga't may asuka pa tayo. 🤗💞",
+        "Ingatan mo'ko, mahirap nang makapaghanap ng kagaya kong TDH - Tol, Dark, and Hello. 😂💞",
+        "Yung pandak pero pa-laban ka. Yieee. Kung Fu Pandak! 🐼💞",
+        "Akala ko dagat lang ang lumalalim pati pala yung pagmamahal ko sayo. 🫰💞",
+        "Wala nga akong pampalit ng profile, pampalit pa kaya sayo? Hays. 🤦🩷",
+        "I want lambing. Chat mo'ko pag free ka ah? I love you. 🩷",
+        "Sabi ng iba, kadalasan daw sa mga magaganda ay mainitin ang ulo. Kaya pala palagi kang galit sako babi. 🙈❤️",
+        "Hapdi ng mata ko, kailangan na ata kitang makita eih. 🙈❤️",
+        "Makita lang kita, kompleto na ang buhay ko. 💖",
+        "Kinulang ka man sa height, pero na sobrahan naman sa ganda. Okay na yan bab. Hehe. 🔥🩷",
     ];
 
     // Working copy of shuffled messages
@@ -166,6 +159,74 @@
         clearInterval(heartInterval);
         floatingHearts.innerHTML = ''; // clear remaining hearts
     }
+</script>
+
+<script>
+    const musicBtn = document.getElementById('music-btn');
+    const musicPlayer = document.getElementById('music-player');
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const songTitle = document.getElementById('song-title');
+    const bgMusic = document.getElementById('bg-music');
+
+    // 🎵 Playlist
+    const songs = [
+        "public/audios/Cup of Joe - Ikaw Pa Rin Ang Pipiliin Ko.mp3",
+        "public/audios/Cup of Joe - Patutunguhan.mp3",
+        "public/audios/Cup of Joe, Janine Teñoso - Tingin.mp3",
+        "public/audios/Cup of Joe - Sandali.mp3",
+        "public/audios/Cup of Joe - Multo.mp3",
+        "public/audios/Cup of Joe - Estranghero.mp3",
+        "public/audios/Cup of Joe - Sagada.mp3",
+        "public/audios/Cup of Joe - Misteryoso.mp3"
+    ];
+
+    let currentSongIndex = Math.floor(Math.random() * songs.length);
+    bgMusic.src = songs[currentSongIndex];
+    songTitle.textContent = songs[currentSongIndex].split("/").pop();
+
+    // Toggle sidebar with same button
+    musicBtn.addEventListener('click', () => {
+    musicPlayer.classList.toggle('open');
+    });
+
+    // Play / Pause
+    playPauseBtn.addEventListener('click', () => {
+    if (bgMusic.paused) {
+        bgMusic.play();
+        playPauseBtn.textContent = "⏸";
+    } else {
+        bgMusic.pause();
+        playPauseBtn.textContent = "▶";
+    }
+    });
+
+    // Next song
+    nextBtn.addEventListener('click', () => {
+    currentSongIndex = (currentSongIndex + 1) % songs.length;
+    loadSong();
+    });
+
+    // Previous song
+    prevBtn.addEventListener('click', () => {
+    currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+    loadSong();
+    });
+
+    // Load song
+    function loadSong() {
+    bgMusic.src = songs[currentSongIndex];
+    songTitle.textContent = songs[currentSongIndex].split("/").pop();
+    bgMusic.play();
+    playPauseBtn.textContent = "⏸";
+    }
+
+    // Auto-play next song when current ends
+    bgMusic.addEventListener('ended', () => {
+    currentSongIndex = (currentSongIndex + 1) % songs.length;
+    loadSong();
+    });
 </script>
 
 </body>
